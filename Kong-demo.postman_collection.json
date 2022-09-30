@@ -1,0 +1,523 @@
+{
+	"info": {
+		"_postman_id": "cae60a2d-e70b-49ed-ad6d-f4437f11a615",
+		"name": "Kong-demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "oauth-plugin",
+			"item": [
+				{
+					"name": "3/5-  get /mock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/mock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"mock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get /mock with apikey",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/mock?apikey=key123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"mock"
+							],
+							"query": [
+								{
+									"key": "apikey",
+									"value": "key123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10- get /mock with oauth2 access token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "dXvl0HivFoc2i998LVXqTqkaKjeIlRAe",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/mock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"mock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1- create service mock-service",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"mock-service\"  ,\n     \"url\":\"http://mockbin.com/request\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/services/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"services",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2- create route /mock",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"mock\"  ,\n     \"paths\":[\"/mock\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/services/mock-service/routes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"services",
+								"mock-service",
+								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4- activate oauth2 plugin on route",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"oauth2\"  ,\n     \"config\":{\n        \"scopes\":[\"email\" ,\"phone\"],\n        \"mandatory_scope\":true ,\n        \"provision_key\":\"123123123\" ,\n        \"enable_authorization_code\":true\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/routes/mock/plugins",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"routes",
+								"mock",
+								"plugins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6- create consumer 12345",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"123456\"  ,\n     \"custom_id\":\"SOME_CUSTOM_ID\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/consumers/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"consumers",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7- generate oauth2 credentials consumer/",
+					"protocolProfileBehavior": {
+						"strictSSL": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\":\"Test Application\" ,\n  \"client_id\":\"CLIENT-ID-1\",\n  \"client_secret\":\"SOME-CLIENT-SECRET\",\n  \"redirect_uris\":[\"http://some-domain/endpoint/\"],\n  \"hash_secret\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/consumers/123456/oauth2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"consumers",
+								"123456",
+								"oauth2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8- generate code oauth2/authorize",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"client_id\": \"CLIENT-ID-1\",\n  \"response_type\": \"code\",\n  \"scope\": \"email phone\",\n  \"provision_key\": \"123123123\",\n  \"authenticated_userid\": \"thefosk\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8443/mock/oauth2/authorize",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"mock",
+								"oauth2",
+								"authorize"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9- exchange code with token oauth2/token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"client_id\": \"CLIENT-ID-1\",\n  \"client_secret\":\"SOME-CLIENT-SECRET\",\n  \"grant_type\":\"authorization_code\",\n  \"redirect_uri\":\"http://some-domain/endpoint/\",\n  \"code\":\"n1y1ItOMEUwYinJ9sGNh826m7CEE8hZY\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8443/mock/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"mock",
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generate  refresh oauth2/token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"client_id\": \"CLIENT-ID-1\",\n  \"client_secret\":\"SOME-CLIENT-SECRET\",\n  \"grant_type\":\"refresh_token\",\n  \"refresh_token\":\"2hD7Tl3rexDgPf223aPmzOhBY3YEhVcm\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8443/mock/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"mock",
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generate token[client_credentials] oauth2/token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"client_id\": \"CLIENT-ID-1\",\n  \"client_secret\":\"SOME-CLIENT-SECRET\",\n    \"scope\": \"email phone\",\n  \"grant_type\":\"client_credentials\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8443/mock/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8443",
+							"path": [
+								"mock",
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "oauth2 get consumer Info /consumers/123456/oauth2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"client_id\": \"client_id_1\",\n    \"client_secret\":\"client_secret_1\",\n    \"scope\": \"email phone\",\n  \"grant_type\":\"client_credentials\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/consumers/123456/oauth2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"consumers",
+								"123456",
+								"oauth2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin1",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8444/routes",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8444",
+					"path": [
+						"routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete plugin",
+			"protocolProfileBehavior": {
+				"strictSSL": false
+			},
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:8444/plugins/a714d55e-a168-4efc-ae1a-6c380b0d5c84",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8444",
+					"path": [
+						"plugins",
+						"a714d55e-a168-4efc-ae1a-6c380b0d5c84"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "auth/dialog",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {},
+				"followRedirects": false
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Host",
+						"value": "api.rd.services",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://api-staging.rd.services/auth/dialog",
+					"protocol": "http",
+					"host": [
+						"api-staging",
+						"rd",
+						"services"
+					],
+					"path": [
+						"auth",
+						"dialog"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-exists",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"host": true
+				}
+			},
+			"request": {
+				"method": "HEAD",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Host",
+						"value": "staging.plugcrm.net",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://api-staging.rd.services/v1/user-exists/mohamoud.aljadan+2022-07-01@rdstation.com",
+					"protocol": "http",
+					"host": [
+						"api-staging",
+						"rd",
+						"services"
+					],
+					"path": [
+						"v1",
+						"user-exists",
+						"mohamoud.aljadan+2022-07-01@rdstation.com"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
